@@ -1,0 +1,46 @@
+@startuml
+title Diagrama de Classes - SGO
+
+class Competição {
+    - id: int
+    - modalidade: String
+    - data: Date
+    - horario: Time
+    + cadastrar()
+    + validarConflitoLocal()
+}
+
+class Atleta {
+    - id: int
+    - nome: String
+    - paisOrigem: String
+    + inscrever(modalidade)
+}
+
+class Local {
+    - id: int
+    - nome: String
+    - endereco: String
+    + verificarDisponibilidade()
+}
+
+class Pais {
+    - id: int
+    - nome: String
+    - rankingMedalhas: int
+}
+
+class Resultado {
+    - id: int
+    - ouro: Atleta
+    - prata: Atleta
+    - bronze: Atleta
+    + gerarRelatorio()
+}
+
+' Relacionamentos [cite: 106, 109, 114]
+Competição "1..*" -- "1" Local : ocorre em
+Competição "1" o-- "1..*" Atleta : inscritos
+Atleta "1..*" -- "1" Pais : representa
+Competição "1" -- "1" Resultado : gera
+@enduml

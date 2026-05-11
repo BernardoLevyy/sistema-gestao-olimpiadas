@@ -1,0 +1,40 @@
+@startuml
+title Diagrama de Componentes - Sistema de Gestão das Olimpíadas (SGO)
+
+skinparam componentStyle uml2
+
+package "Interface do Usuário (Frontend)" {
+    [Web Application] as Web
+    [Mobile App Atleta] as Mobile
+}
+
+package "Serviços do Sistema (Backend)" {
+    component "Gestor de Competições" as CompService
+    component "Módulo de Inscrição" as InscService
+    component "Processador de Resultados" as ResService
+}
+
+database "SGO Database" {
+    [PostgreSQL / RDS] as DB
+}
+
+cloud "Serviços Externos" {
+    [Serviço de Notificação] as Notification
+}
+
+' Relacionamentos e Interfaces
+Web --(0- CompService
+Mobile --(0- InscService
+
+CompService ..> DB : persiste
+InscService ..> DB : persiste
+ResService ..> DB : consulta/atualiza
+
+ResService ..> Notification : dispara alertas
+
+note right of ResService
+  Responsável por calcular 
+  o ranking de medalhas.
+end note
+
+@enduml

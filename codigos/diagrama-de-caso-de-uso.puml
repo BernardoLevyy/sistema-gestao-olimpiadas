@@ -1,1 +1,55 @@
+@startuml
+title Diagrama de Caso de Uso - Sistema de Gestão das Olimpíadas (SGO)
 
+' Definições de Skinparam para estética profissional
+skinparam usecase {
+    BackgroundColor #FEFECE
+    BorderColor #A80036
+}
+left to right direction
+
+actor "Administrador" as Admin
+actor "Atleta" as Atleta
+actor "Comitê Olímpico" as Comite
+
+package "Sistema de Gestão das Olimpíadas (SGO)" {
+    
+    package "Gestão de Eventos" {
+        usecase "UC01 - Manter Competição" as UC01
+        usecase "UC03 - Alocar Local de Prova" as UC03
+    }
+    
+    package "Inscrições e Atletas" {
+        usecase "UC02 - Inscrever Atleta" as UC02
+    }
+    
+    package "Pós-Competição" {
+        usecase "UC04 - Registrar Resultados" as UC04
+        usecase "UC05 - Gerar Relatório de Medalhas" as UC05
+    }
+}
+
+' Relacionamentos
+Admin --> UC01
+Admin --> UC03
+Admin --> UC04
+Admin --> UC05
+
+Comite --> UC02
+Atleta --|> Comite : representa
+
+' Notas de Regras de Negócio (Fidelidade ao estilo dos exemplos)
+note right of UC03
+  <b>Regra de Negócio:</b>
+  Evitar conflitos de horário.
+  Um local abriga apenas uma 
+  competição por vez.
+end note
+
+note bottom of UC02
+  <b>Restrição:</b>
+  Atleta representa apenas um país 
+  por modalidade.
+end note
+
+@enduml

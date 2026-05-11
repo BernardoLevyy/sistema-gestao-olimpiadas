@@ -46,4 +46,4 @@ Representa a arquitetura física do sistema e o hardware onde o software será e
 - **GitHub**: Para controle de versão e hospedagem.
 
 ## 👨‍💻 Autor
-- **Bernardo** - [Seu Link do GitHub Aqui]
+- **Bernardo** - [(https://github.com/BernardoLevyy)]

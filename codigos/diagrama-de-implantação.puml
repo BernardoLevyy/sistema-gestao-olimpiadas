@@ -1,0 +1,55 @@
+@startuml
+title Diagrama de Implantação - Infraestrutura SGO
+
+' Estética baseada nos seus exemplos profissionais
+skinparam node {
+    BackgroundColor #F8F9FA
+    BorderColor #2E4D68
+}
+
+node "Dispositivo do Usuário" <<Device>> {
+    node "Navegador (React/Next.js)" as Browser
+    node "App Mobile (Flutter/RN)" as App
+}
+
+node "Servidor de Borda (Load Balancer)" as LB
+
+node "Cluster de Aplicação (Kubernetes/EKS)" <<Environment>> {
+    node "Pod: Inscrição" as PodInsc
+    node "Pod: Competição" as PodComp
+    node "Pod: Resultados" as PodRes
+}
+
+node "Servidor de Mensageria (AWS SQS)" as SQS
+
+node "Servidor de Worker" <<Background Process>> {
+    node "Worker: Relatórios" as Worker
+}
+
+node "Servidor de Banco de Dados" <<Database Server>> {
+    database "PostgreSQL (RDS)" as DB
+}
+
+' Conexões e Protocolos
+Browser -- LB : HTTPS
+App -- LB : HTTPS
+
+LB -- PodInsc
+LB -- PodComp
+LB -- PodRes
+
+PodInsc -- DB : JDBC/TCP
+PodComp -- DB : JDBC/TCP
+PodRes -- DB : JDBC/TCP
+
+' Fluxo de Mensagens (Fiel aos exemplos de Workers que você enviou)
+PodRes -> SQS : Enviar Dados do Resultado
+SQS -> Worker : Consumir Mensagem
+Worker -> DB : Atualizar Quadro de Medalhas
+
+note bottom of SQS
+  Garante que a geração de relatórios 
+  não impacte a performance da API.
+end note
+
+@enduml

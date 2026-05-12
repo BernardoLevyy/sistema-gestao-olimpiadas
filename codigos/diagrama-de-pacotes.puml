@@ -1,0 +1,25 @@
+@startuml
+title Diagrama de Pacotes - Sistema de Gestão das Olimpíadas (SGO)
+
+package "SGO::UI" {
+    [Interface do Usuário]
+}
+
+package "SGO::Domain" {
+    package "Competição" as PKG_Comp
+    package "Participantes" as PKG_Part
+    package "Resultados" as PKG_Res
+}
+
+package "SGO::Infraestrutura" {
+    [Banco de Dados]
+    [Gerador de Relatórios]
+}
+
+' Dependências
+"SGO::UI" ..> "SGO::Domain" : utiliza
+PKG_Res ..> PKG_Comp : baseia-se em
+PKG_Comp ..> PKG_Part : contém
+"SGO::Domain" ..> "SGO::Infraestrutura" : persiste dados
+
+@enduml
